@@ -1,55 +1,30 @@
 # timezone-picker
 
+If you're confused about the docs, sorry! I'll get it to work first and i'll update the docs when I get around to it. Just replace `$(selector).timezonepicker` with `timezonepickerinstance = new TimeZonePicker()` for now.
+
 timezone-picker is the plugin to select and get timezone value of selected area(country) from WorldMap.
 
-[![NPM version](https://badge.fury.io/js/timezone-picker.svg)](https://www.npmjs.com/package/timezone-picker)
-[![NPM Dependency](https://david-dm.org/kevalbhatt/timezone-picker.svg)](https://www.npmjs.com/package/timezone-picker)
-[![](https://data.jsdelivr.com/v1/package/npm/timezone-picker/badge)](https://www.jsdelivr.com/package/npm/timezone-picker)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)]()
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kevalbhatt/timezone-picker/issues)
-[![HitCount](http://hits.dwyl.com/kevalbhatt/timezone-picker.svg)](http://github.com/kevalbhatt/timezone-picker)
 
 
-### Live Demo: http://kevalbhatt.github.io/timezone-picker/
+### Live Demo: http://acenturyandabit.github.io/timezone-picker/
 ---------------------
 
 ![Imgur](https://i.imgur.com/YrGdPv2.png)
 
 # Dependency
 ---------------------
-* moment-timezone
-* jquery
-* select2 (optional)
-
+NONE :))
 
 # Installation
 ---------------------
-
-### Use package Using npm
-
-```sh
-npm install --save timezone-picker
-```
-or 
-
-### Use package Using CDN
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/timezone-picker@2.0.0-1/dist/timezone-picker.min.js"></script>
-```
-
-Include the following lines of code in the section of your HTML.
-
-```html
-<link href="[yourpath]/select2.min.css" rel="stylesheet"> <!-- Optional -->
-<link href="[yourpath]/dist/styles/timezone-picker.css" rel="stylesheet">
-<script type="text/javascript" src="[yourpath]/moment-timezone.js"></script> 
-<script type="text/javascript" src="[yourpath]/jquery.js"></script>
-<script type="text/javascript" src="[yourpath]/select2"></script> <!-- Optional -->
-<script type="text/javascript" src="[yourpath]/dist/timezone-picker.min.js"></script>
-```
-
+### Poor man's installation
+1. Clone the repo.
+2. Copy `main.js` and `data.json` into your project directory.
+3. Update `main.js` so it points to the right place to retrieve `data.json`.
+4. Use it!
 
 # Usage
 ---------------------
@@ -57,173 +32,47 @@ Include the following lines of code in the section of your HTML.
 ## Select any dom element where you want to create the map.
 
 ```js
-$(selector).timezonePicker();
-```
-
-## defaultValue
-
-Set a custom value on load
-
-If defaultValue is null then system timezone is selected
-
-* ### Select value based on zonename.
-
-```js
-$(selector).timezonePicker({ defaultValue: { value: "EAT", attribute: "zonename" }});
-```
-
-* ### Select value based on country code.
-
-```js
-$(selector).timezonePicker({ defaultValue: { value: "IN", attribute: "country" }});
-```
-
-* ### Select value based on timezone.
-
-```js
-$(selector).timezonePicker({ defaultValue: { value: "Asia/Calcutta", attribute: "timezone" }});
-```
-
-* ### Select value based on offset.
-
-```js
-$(selector).timezonePicker({ defaultValue: { value: "5.5", attribute: "offset" }});
-```
-
-## quickLink
-
-You can create custom shortcuts link using quickLink options.
-
-```js
-$(selector).timezonePicker({
+let options={
+    defaultValue: { value:"EAT", attribute: "zonename" },
+    //or { value: "AUS", attribute: "country" }
+    //or { value: "Asia/Calcutta", attribute: "timezone" }
+    //or { value: "5.5", attribute: "offset" }
+    
+    //You can create custom shortcuts using the quickLink option.
     quickLink: [{
         "IST": "IST",
-        "LONDON": "Europe/London"
-    }]
-});
-```
-
-* "LONDON": This key is used as a display string for shortcut button.
-* "Europe/London": This value is used when user click on a button and based on value, map is highlighted
-
-
-Example: 
-
-You can pass following value.
-
-* **timezone** : Europe/London
-* **zonename** : GMT
-* **country code** : GB
-
-```js
-$(selector).timezonePicker({
-    quickLink: [{
-        "LONDON1": "Europe/London"
-    }]
-});
-
-$(selector).timezonePicker({
-    quickLink: [{
-        "LONDON2": "GB"
-    }]
-});
-
-$(selector).timezonePicker({
-    quickLink: [{
+        "LONDON": "Europe/London",
+        "LONDON2": "GB",
         "LONDON3": "GMT"
-    }]
-});
-
-$(selector).timezonePicker({
-    quickLink: [{
-        "GMT": "GMT"
-    }]
-});
-```
-
-## hoverText
-
-```js
-$(selector).timezonePicker({
+    }],
+    
+    quickLinkClass: "quick-class"
+    
+    hoverTextClass: "hover-class"
     hoverText: function(e, data){
         return (data.timezone + " (" + data.zonename + ")");
     }
-});
+    
+    //Class name for the country drop-down.
+    selectClass: "select-class"
+    
+    //Class name for the filter box container.
+    filterBoxClass: "filter-class"
+}
+let p = new TimeZonePicker(options);
+element.appendChild(p.element);
 ```
+Set a custom value on load
 
-## quickLinkClass
-
-Class name for the quickLink container.
-
-```js
-$(selector).timezonePicker({
-    quickLinkClass: "quick-class"
-});
-```
+If defaultValue is null then the system timezone is selected
 
 **Output**
 
-```diff
+```html
 <div class="filter-box">
     <select class="country-lov select-class"></select>
-+    <div class="quick-link quick-class"></div>
+    <div class="quick-link quick-class"></div>
     <div class="hover-text"></div>
-</div>
-```
-## selectClass
-
-Class name for the country drop-down.
-
-```js
-$('body').timezonePicker({
-    selectClass: "select-class"
-});
-```
-**Output**
-
-```diff
-<div class="filter-box">
-+    <select class="country-lov select-class"></select>
-    <div class="quick-link"></div>
-    <div class="hover-text"></div>
-</div>
-```
-
-## filterBoxClass
-
-Class name for the filter box container.
-
-```js
-$('body').timezonePicker({
-    filterBoxClass: "filter-class"
-});
-```
-**Output**
-
-```diff
-+<div class="filter-box filter-class">
-    <select class="country-lov"></select>
-    <div class="quick-link"></div>
-    <div class="hover-text"></div>
-</div>
-```
-
-## hoverTextClass
-
-Class name for the hover text container.
-
-```js
-$('body').timezonePicker({
-    hoverTextClass: "hover-class"
-});
-```
-**Output**
-
-```diff
-<div class="filter-box">
-    <select class="country-lov"></select>
-    <div class="quick-link"></div>
-+    <div class="hover-text hover-class"></div>
 </div>
 ```
 
