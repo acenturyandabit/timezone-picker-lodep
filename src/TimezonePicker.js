@@ -1,24 +1,20 @@
 /**
- * @version: v2.0.0-0
- * @author: Keval Bhatt 
- * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
+ * @version: v1.0.0-0
+ * @author: acenturyandabit
+ * @copyright: Copyright (c) 2019 Steven Liu // major credits to Keval Bhatt. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
- * @website: http://kevalbhatt.github.io/timezone-picker/
+ * @website: http://acenturyandabit.github.io/timezone-picker/
  */
-'use strict';
 
-import timezones from 'timezones.json';
-import { findValue, generateElement } from 'utils/Utils';
-import Plugin from 'utils/Plugin';
-import 'select2';
-import 'select2/dist/css/select2.css';
 
-import 'styles/style';
+function TimezonePicker(settings){
+    const timezoneURL="/path/to/timezones.json";
+    
+    //fetch timezones file
+    
 
-export default class TimezonePicker {
-    static VERSION: "v2.0.0-0"
-
-    static DEFAULTS = {
+    //merge defaults
+    this.settings={
         width: 500,
         height: 250,
         defaultValue: null,
@@ -37,22 +33,39 @@ export default class TimezonePicker {
         hoverText: null,
         dayLightSaving: ((typeof moment == "function") ? (true) : (false))
     }
+    Object.assign(this.settings,settings);
+    
+    this.element=document.createElement("div");
+
+
+    this.setValue=(value,attribute)=>{
+
+    }
+
+    this.generateMap(settings);
+
+
+    //set the default
+    if (this.settings.defaultValue){
+        this.setValue
+    }
+
+    let timezoneObj = this.getSystemTimezone()[0];
+    if (timezoneObj) {
+        this.setValue(timezoneObj.timezone);
+    }
+}
 
     constructor(element, options) {
         this.$el = element;
-        this.generateMap(options);
         if (options.defaultValue) {
             if (typeof options.defaultValue == "object") {
                 let { value, attribute } = options.defaultValue;
-                this.setValue(value, attribute);
             } else {
                 this.setValue(options.defaultValue);
             }
         } else {
-            let timezoneObj = this.getSystemTimezone()[0];
-            if (timezoneObj) {
-                this.setValue(timezoneObj.timezone);
-            }
+            
         }
     }
     /**
